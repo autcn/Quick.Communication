@@ -1,0 +1,249 @@
+﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+#pragma warning disable 1591
+namespace Quick.Communication
+{
+    /// <summary>
+    /// Represents a base class of tcp communication
+    /// </summary>
+    public abstract class TcpBase
+    {
+        #region Constructor
+        public TcpBase()
+        {
+            _clients = new ConcurrentDictionary<long, ClientContext>();
+        }
+        #endregion
+
+        #region Private Members
+
+        protected bool _isRunning = false;
+        protected IPacketSpliter _packetSpliter;
+        protected TcpConfig _tcpConfig;
+        protected ConcurrentDictionary<long, ClientContext> _clients;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets a value indicating whether the tcp is running.
+        /// </summary>
+        /// <returns>true if the tcp is running; otherwise, false. The default is false.</returns>
+        public bool IsRunning
+        {
+            get { return _isRunning; }
+        }
+
+        /// <summary>
+        /// Get or sets the text encoding in tcp communication.
+        /// </summary>
+        /// <returns>The text encoding int tcp communication. The default is UTF8.</returns>
+        public Encoding TextEncoding { get; set; } = Encoding.UTF8;
+
+        /// <summary>
+        /// Gets or sets the packet spliter which is used to split stream data.
+        /// </summary>
+        /// <returns>The packet spliter.</returns>
+        public IPacketSpliter PacketSpliter
+        {
+            get { return _packetSpliter; }
+            set
+            {
+                if (_isRunning)
+                {
+                    throw new Exception("can not change packet spliter during running time");
+                }
+                _packetSpliter = value;
+            }
+        }
+
+        #endregion
+
+        #region Protected Functions
+
+        protected virtual void OnClientStatusChanged(bool isInThread, ClientStatusChangedEventArgs args, HashSet<string> clientGroups)
+        {
+        }
+
+        protected virtual void OnRawMessageReceived(MessageReceivedEventArgs args)
+        {
+        }
+        protected virtual bool ReceivedMessageFilter(MessageReceivedEventArgs tcpRawMessageArgs)
+        {
+            return false;
+        }
+
+        #endregion
+
+        #region Private functions
+
+        private void ProcessReceive(SocketAsyncEventArgs sockAsyncArgs)
+        {
+            if (!_isRunning)
+            {
+                return;
+            }
+            long clientID = (long)sockAsyncArgs.UserToken;
+
+            if (!_clients.TryGetValue(clientID, out ClientContext clientContext))
+            {
+                return;
+            }
+            Socket sockClient = clientContext.ClientSocket;
+            if (sockAsyncArgs.SocketError == SocketError.Success)
+            {
+                int recvCount = sockAsyncArgs.BytesTransferred;
+                if (recvCount > 0)
+                {
+                    RingQueue clientRingBuffer = clientContext.ReceiveBuffer;
+                    clientRingBuffer.Write(sockAsyncArgs.Buffer, sockAsyncArgs.Offset, recvCount);
+                    //speed limit
+                    if (clientContext.RecvSpeedController != null)
+                    {
+                        clientContext.RecvSpeedController.TryLimit(recvCount);
+                    }
+
+                    //try get a completed packet
+                    List<DataPacket> messageList = null;
+                    int endPos = 0;
+                    try
+                    {
+                        messageList = _packetSpliter.GetPackets(clientRingBuffer.Buffer, 0, clientRingBuffer.DataLength, clientID, out endPos);
+                    }
+                    catch (NotImplementedException)
+                    {
+                        clientRingBuffer.Clear();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageReceivedEventArgs rawMessage = new MessageReceivedEventArgs(clientID, ex);
+                        OnRawMessageReceived(rawMessage);
+                    }
+                    if (messageList != null)
+                    {
+                        try
+                        {
+                            clientRingBuffer.Remove(endPos);
+                            foreach (DataPacket messageSegment in messageList)
+                            {
+                                clientContext.RecvRawMessage.ClientID = (long)sockClient.Handle;
+                                clientContext.RecvRawMessage.MessageRawData = messageSegment.Data;
+                                //clientContext.RecvRawMessage.Tag = messageSegment.Tag;
+                                MessageReceivedEventArgs rawMessage = new MessageReceivedEventArgs(clientID, clientContext.RecvRawMessage.MessageRawData);
+                                OnRawMessageReceived(rawMessage);
+                            }
+                        }
+                        catch (InvalidPacketException)
+                        {
+                            //invalid data received , indicates the client has made a illegal connection, we should disconnect it.
+                            if (_isRunning)
+                                CloseClient(true, (long)sockClient.Handle);
+                            return;
+                        }
+                        catch
+                        {
+                        }
+                    }
+
+                    //in case of the socket is closed, the following statements may cause of exception, so we should use try catch
+                    try
+                    {
+                        if (!clientContext.ClientSocket.ReceiveAsync(sockAsyncArgs))
+                        {
+                            ProcessReceive(sockAsyncArgs);
+                        }
+                    }
+                    catch { }
+                }
+                else
+                {
+                    //_logger?.Warn($"sockAsyncArgs got an error: {sockAsyncArgs.SocketError.ToString()}");
+                    if (_isRunning)
+                        CloseClient(true, clientID);
+                }
+            }
+            else
+            {
+                if (_isRunning)
+                    CloseClient(true, clientID);
+            }
+        }
+
+        private void SockAsyncArgs_Completed(object sender, SocketAsyncEventArgs e)
+        {
+            if (e.LastOperation == SocketAsyncOperation.Receive)
+            {
+                ProcessReceive(e);
+            }
+        }
+
+        protected ClientContext AddNewClient(Socket newClient)
+        {
+            ClientContext context = null;
+
+            context = new ClientContext();
+            context.SockAsyncArgs = new SocketAsyncEventArgs();
+            byte[] asyncBuffer = new byte[_tcpConfig.SocketAsyncBufferSize];
+            context.SockAsyncArgs.SetBuffer(asyncBuffer, 0, asyncBuffer.Length);
+
+
+            context.ClientSocket = newClient;
+            context.ClientID = (long)newClient.Handle;
+            context.Status = ClientStatus.Connected;
+            if (_tcpConfig.ReceiveDataMaxSpeed != TcpConfig.NotLimited)
+            {
+                context.RecvSpeedController.LimitSpeed = _tcpConfig.ReceiveDataMaxSpeed;
+                context.RecvSpeedController.Enabled = true;
+            }
+            if (_tcpConfig.SendDataMaxSpeed != TcpConfig.NotLimited)
+            {
+                context.SendController.LimitSpeed = _tcpConfig.SendDataMaxSpeed;
+                context.SendController.Enabled = true;
+            }
+            context.SockAsyncArgs.Completed += SockAsyncArgs_Completed;
+            IPEndPoint remoteIPEnd = (IPEndPoint)newClient.RemoteEndPoint;
+            //save original ip end point, so we can always get the remote ip end point even the socket is closed.
+            context.IPEndPoint = new IPEndPoint(remoteIPEnd.Address, remoteIPEnd.Port);
+            bool bOK = _clients.TryAdd((long)newClient.Handle, context);
+            if (this is TcpClientEx)
+            {
+                System.Diagnostics.Trace.Assert(bOK, $"client:add new client failed:{this.GetHashCode()}   {newClient.Handle}");
+            }
+            else
+            {
+                System.Diagnostics.Trace.Assert(bOK, $"server:add new client failed:{this.GetHashCode()}   {newClient.Handle}");
+            }
+
+            context.SockAsyncArgs.UserToken = (long)newClient.Handle;
+            ClientStatusChangedEventArgs eventArgs = new ClientStatusChangedEventArgs(context.ClientID, newClient.RemoteEndPoint as IPEndPoint, ClientStatus.Connected);
+
+            OnClientStatusChanged(false, eventArgs, null);
+            if (!newClient.ReceiveAsync(context.SockAsyncArgs))
+            {
+                ProcessReceive(context.SockAsyncArgs);
+            }
+            return context;
+        }
+
+        protected void CloseClient(bool isInThread, long clientID)
+        {
+            if (_clients.TryRemove(clientID, out ClientContext clientContext))
+            {
+                IPEndPoint ipEndPt = clientContext.IPEndPoint;
+                clientContext.Status = ClientStatus.Closed;
+                clientContext.ClientSocket.Close();
+                clientContext.ClientSocket.Dispose();
+                clientContext.SockAsyncArgs.Completed -= SockAsyncArgs_Completed;
+                ClientStatusChangedEventArgs eventArgs = new ClientStatusChangedEventArgs(clientID, ipEndPt, ClientStatus.Closed);
+                OnClientStatusChanged(isInThread, eventArgs, clientContext.Groups);
+            }
+        }
+
+        #endregion
+    }
+}

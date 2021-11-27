@@ -1,0 +1,2037 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Quick.Communication</name>
+    </assembly>
+    <members>
+        <member name="T:Quick.Communication.ClientStatus">
+            <summary>
+            Specific the client status for all kinds of clients
+            </summary>
+        </member>
+        <member name="F:Quick.Communication.ClientStatus.Closed">
+            <summary>
+            Indicating a status that the client is closed.
+            </summary>
+        </member>
+        <member name="F:Quick.Communication.ClientStatus.Connecting">
+            <summary>
+            Indicating a status that the client is trying to connect to server.
+            </summary>
+        </member>
+        <member name="F:Quick.Communication.ClientStatus.Connected">
+            <summary>
+            Indicating a status that the client has connected to server.
+            </summary>
+        </member>
+        <member name="T:Quick.Communication.DataPacket">
+            <summary>
+            Represents a complete data packet
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.DataPacket.Data">
+            <summary>
+            Gets or sets the data of the packet.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.DataPacket.ClientID">
+            <summary>
+            Gets or sets the client id of the packet.
+            </summary>
+        </member>
+        <member name="T:Quick.Communication.DynamicBufferStream">
+            <summary>
+            Provides a buffer stream which can change size dynamically.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.DynamicBufferStream.#ctor(System.Int32)">
+            <summary>
+            Initializes a new instance of DynamicBuffer
+            </summary>
+            <param name="capacity">The init size of the buffer.</param>
+        </member>
+        <member name="M:Quick.Communication.DynamicBufferStream.#ctor">
+            <summary>
+            Initializes a new instance of DynamicBuffer. The init size is 4K, in bytes.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.DynamicBufferStream.BufferCheckPeriod">
+            <summary>
+            Gets or sets a value that represents the buffer size check period. At the end of each period, 
+            the buffer may be adjusted according to the usage in one period.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.DynamicBufferStream.Buffer">
+            <summary>
+            Gets the inner buffer for the data storage. 
+            Notice that the length of the Buffer is not the data length of DynamicBufferStream, use "Length" property instead.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.DynamicBufferStream.CanRead">
+            <summary>
+            Gets a value indicating whether the current stream supports reading.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.DynamicBufferStream.CanSeek">
+            <summary>
+            Gets a value indicating whether the current stream supports seeking.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.DynamicBufferStream.CanWrite">
+            <summary>
+            Gets a value indicating whether the current stream supports writing.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.DynamicBufferStream.Length">
+            <summary>
+            Gets the length in bytes of the stream.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.DynamicBufferStream.Position">
+            <summary>
+            Gets or sets the position within the current stream.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.DynamicBufferStream.Flush">
+            <summary>
+            Not supported.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.DynamicBufferStream.ReadByte">
+            <summary>
+            Reads a byte from the stream and advances the position within the stream by one byte, or returns -1 if at the end of the stream.
+            </summary>
+            <returns>The unsigned byte cast to an Int32, or -1 if at the end of the stream.</returns>
+        </member>
+        <member name="M:Quick.Communication.DynamicBufferStream.Read(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Reads a sequence of bytes from the current stream and advances the position within the stream by the number of bytes read.
+            </summary>
+            <param name="buffer">An array of bytes. When this method returns, the buffer contains the specified
+                byte array with the values between offset and (offset + count - 1) replaced by
+                the bytes read from the current source
+            </param>
+            <param name="offset">The zero-based byte offset in buffer at which to begin storing the data read from the current stream.</param>
+            <param name="count">The maximum number of bytes to be read from the current stream.</param>
+            <returns>The total number of bytes read into the buffer. This can be less than the number
+            of bytes requested if that many bytes are not currently available, or zero (0) if the end of the stream has been reached.
+            </returns>
+        </member>
+        <member name="M:Quick.Communication.DynamicBufferStream.Seek(System.Int64,System.IO.SeekOrigin)">
+            <summary>
+            Sets the position within the current stream.
+            </summary>
+            <param name="offset">A byte offset relative to the origin parameter.</param>
+            <param name="origin">A value of type System.IO.SeekOrigin indicating the reference point used to obtain the new position.</param>
+            <returns>The new position within the current stream.</returns>
+        </member>
+        <member name="M:Quick.Communication.DynamicBufferStream.Set(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Set the stream data with specific byte array. The stream length will be set to the length of the array and the position will be set to 0.
+            </summary>
+            <param name="data">An array of bytes.</param>
+            <param name="offset">The zero-based byte offset in buffer at which to begin copying bytes to the current stream.</param>
+            <param name="count">The number of bytes to be written to the current stream.</param>
+        </member>
+        <member name="M:Quick.Communication.DynamicBufferStream.SetLength(System.Int64)">
+            <summary>
+            Sets the length of the current stream.If the postion is less than length, it will be set to length.
+            </summary>
+            <param name="dataLength">The desired length of the current stream in bytes.</param>
+        </member>
+        <member name="M:Quick.Communication.DynamicBufferStream.Write(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Writes a sequence of bytes to the current
+                stream and advances the current position within this stream by the number of
+                bytes written.
+            </summary>
+            <param name="buffer"> An array of bytes. This method copies count bytes from buffer to the current stream.</param>
+            <param name="offset">The zero-based byte offset in buffer at which to begin copying bytes to the current stream.</param>
+            <param name="count">The number of bytes to be written to the current stream.</param>
+        </member>
+        <member name="M:Quick.Communication.DynamicBufferStream.WriteByte(System.Byte)">
+            <summary>
+            Writes a byte to the current position in the stream and advances the position
+                within the stream by one byte.
+            </summary>
+            <param name="value">The byte to write to the stream.</param>
+        </member>
+        <member name="M:Quick.Communication.DynamicBufferStream.Clear">
+            <summary>
+            Set the stream length and position to 0.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.DynamicBufferStream.Close">
+            <summary>
+            Closes the current stream.
+            </summary>
+        </member>
+        <member name="T:Quick.Communication.AlreadyRunningException">
+            <summary>
+            The exception that is thrown when calling a starting function on already running task.
+            </summary>
+        </member>
+        <member name="T:Quick.Communication.NotRunningException">
+            <summary>
+            The exception that is thrown when doing some opertions on not running task.
+            </summary>
+        </member>
+        <member name="T:Quick.Communication.InvalidPacketException">
+            <summary>
+            The exception that is thrown when received an invalid packet
+            </summary>
+        </member>
+        <member name="T:Quick.Communication.QueueFullException">
+            <summary>
+            The exception that is thrown when the queue is full
+            </summary>
+        </member>
+        <member name="T:Quick.Communication.RingQueue">
+            <summary>
+            Represents a high performance data storage ring queue.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.RingQueue.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the RingQueue
+            </summary>
+            <param name="capacity">The init size of the queue.</param>
+            <param name="maxCount">The limit size of the queue.</param>
+        </member>
+        <member name="M:Quick.Communication.RingQueue.#ctor">
+            <summary>
+            Initializes a new instance of the RingQueue. The default init size is 8K, in bytes. The default limit size is int.MaxValue.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.RingQueue.Buffer">
+            <summary>
+            Gets the buffer of the queue.Notice that the length of the Buffer is not the data length, use "DataLength" property instead.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.RingQueue.Write(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Write buffer into the queue with offset and count.
+            </summary>
+            <param name="data">The data to write.</param>
+            <param name="offset">The offset of the data.</param>
+            <param name="count">The count of bytes for writing.</param>
+            <returns>True if the data lenght less than limit size; otherwise false.</returns>
+        </member>
+        <member name="T:Quick.Communication.SimpleRingQueue">
+            <summary>
+            Represents a high performance data storage ring queue.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.SimpleRingQueue.#ctor(System.Int32,System.Int32)">
+            <summary>
+            Initializes a new instance of the RingQueue
+            </summary>
+            <param name="capacity">The init size of the queue.</param>
+            <param name="maxCount">The limit size of the queue.</param>
+        </member>
+        <member name="M:Quick.Communication.SimpleRingQueue.#ctor">
+            <summary>
+            Initializes a new instance of the RingQueue. The default init size is 8K, in bytes. The default limit size is int.MaxValue.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.SimpleRingQueue.Item(System.Int32)">
+            <summary>
+            Get a byte value in the specified index of the queue.
+            </summary>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Quick.Communication.SimpleRingQueue.DataLength">
+            <summary>
+            Gets the data length of the buffer.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.SimpleRingQueue.Write(System.Byte[])">
+            <summary>
+            Write data into the queue.
+            </summary>
+            <param name="data">The data to write.</param>
+            <returns>True if the data lenght less than limit size; otherwise false.</returns>
+        </member>
+        <member name="M:Quick.Communication.SimpleRingQueue.Write(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Write buffer into the queue with offset and count.
+            </summary>
+            <param name="data">The data to write.</param>
+            <param name="offset">The offset of the data.</param>
+            <param name="count">The count of bytes for writing.</param>
+            <returns>True if the data lenght less than limit size; otherwise false.</returns>
+        </member>
+        <member name="M:Quick.Communication.SimpleRingQueue.Peek(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Read the data into out buffer from the queue without any byte removed.
+            </summary>
+            <param name="buffer">The buffer to save the peek data.</param>
+            <param name="offset">The offset of the buffer to fill.</param>
+            <param name="count">The count of bytes to peek.</param>
+            <returns>The real count of bytes that read into the buffer.</returns>
+        </member>
+        <member name="M:Quick.Communication.SimpleRingQueue.Read(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Read the data into out buffer and remove the data from the queue.
+            </summary>
+            <param name="buffer">The buffer to save the peek data.</param>
+            <param name="offset">The offset of the buffer to fill.</param>
+            <param name="count">The count of bytes to peek.</param>
+            <returns>The real count of bytes that read into the buffer.</returns>
+        </member>
+        <member name="M:Quick.Communication.SimpleRingQueue.Remove(System.Int32)">
+            <summary>
+            Remove count of bytes from the queue.
+            </summary>
+            <param name="count">The count of bytes to remove.</param>
+            <returns>The real count of bytes removed from the queue. 
+            If the count is bigger than the queue data length, the return value is the queue data length.</returns>
+        </member>
+        <member name="M:Quick.Communication.SimpleRingQueue.ToArray">
+            <summary>
+            Copy all the queue data into a new byte array.
+            </summary>
+            <returns>The new byte array.</returns>
+        </member>
+        <member name="M:Quick.Communication.SimpleRingQueue.Clear">
+            <summary>
+            Clear the queue data.
+            </summary>
+        </member>
+        <member name="T:Quick.Communication.BufferType">
+            <summary>
+            Specifies the buffer type of the queue within Quick.Communication.SingleThreadTaskScheduler object
+            </summary>
+        </member>
+        <member name="F:Quick.Communication.BufferType.Queue">
+            <summary>
+            Represent a policy that the data will be add to a queue waiting for processing.
+            </summary>
+        </member>
+        <member name="F:Quick.Communication.BufferType.Overlapped">
+            <summary>
+            Represent a policy that if the old data is not processed in time, it will be overlapped by new data.
+            </summary>
+        </member>
+        <member name="T:Quick.Communication.SingleThreadTaskScheduler">
+            <summary>
+            Represents an object that handles work in queue with one thread
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.SingleThreadTaskScheduler.#ctor(Quick.Communication.BufferType)">
+            <summary>
+            Initializes a new instance of the Quick.Communication.SingleThreadTaskScheduler class using 
+            the specific buffer type
+            </summary>
+            <param name="bufferType">The buffer type of the task queue</param>
+        </member>
+        <member name="M:Quick.Communication.SingleThreadTaskScheduler.#ctor">
+            <summary>
+            Initializes a new instance of the Quick.Communication.SingleThreadTaskScheduler class
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.SingleThreadTaskScheduler.Stop">
+            <summary>
+            Stop the working thread within the scheduler
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.SingleThreadTaskScheduler.Run(System.Action)">
+            <summary>
+            Run as new task with this scheduler
+            </summary>
+            <param name="action">The action to execute.</param>
+            <returns>A new task</returns>
+        </member>
+        <member name="M:Quick.Communication.SingleThreadTaskScheduler.Run``1(System.Action{``0},``0)">
+            <summary>
+            Run as new task with this scheduler
+            </summary>
+            <param name="action">The action to execute.</param>
+            <param name="state">An object containing data to be used by the action delegate.</param>
+            <returns>A new task</returns>
+        </member>
+        <member name="M:Quick.Communication.SingleThreadTaskScheduler.Run``1(System.Func{``0})">
+            <summary>
+            Run as new task with this scheduler
+            </summary>
+            <param name="func">The function to execute.</param>
+            <returns>A new task with specific result type.</returns>
+        </member>
+        <member name="M:Quick.Communication.SingleThreadTaskScheduler.Run``2(System.Func{``1,``0},``1)">
+            <summary>
+            Run as new task with this scheduler
+            </summary>
+            <param name="func">The function to execute.</param>
+            /// <param name="state">An object containing data to be used by the action delegate.</param>
+            <returns>A new task with specific result type.</returns>
+        </member>
+        <member name="T:Quick.Communication.SpeedController">
+            <summary>
+            Provides methods for speed control
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.SpeedController.LimitSpeed">
+            <summary>
+            Gets or sets a value indicating the limit speed. If the value less or equal to 0, the speed control is not working.The default is 0.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.SpeedController.Enabled">
+            <summary>
+            Gets or sets a value indicating whether to enable speed control.The default is false.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.SpeedController.Reset">
+            <summary>
+            Reset the speed controller.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.SpeedController.TryLimit(System.Int32)">
+            <summary>
+            Try to limit the speed. 
+            </summary>
+            <param name="newDataSize">The new data size for speed limit.</param>
+            <returns>True if the speed is limited; otherwise false.</returns>
+        </member>
+        <member name="T:Quick.Communication.ThreadEx">
+            <summary>
+            Provides simple static methods for starting a thread
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.ThreadEx.Start(System.Threading.ParameterizedThreadStart,System.Object)">
+            <summary>
+            Start a thread using ParameterizedThreadStart delegate and user defined state
+            </summary>
+            <param name="start"> A delegate that represents the methods to be invoked when this thread begins executing.</param>
+            <param name="parameter">An object that contains data to be used by the method the thread executes.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Quick.Communication.ThreadEx.Start(System.Threading.ThreadStart)">
+            <summary>
+            Start a thread using ThreadStart delegate
+            </summary>
+            <param name="start"> A delegate that represents the methods to be invoked when this thread begins executing.</param>
+            <returns></returns>
+        </member>
+        <member name="T:Quick.Communication.PipeBase">
+            <summary>
+            Represents a base class of pipe communication
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.PipeBase.TextEncoding">
+            <summary>
+            Gets or sets the encoding when transmitting text in pipe communication.
+            </summary>
+            <returns>The encoding when transmitting text in pipe communication. The default is UTF8.</returns>
+        </member>
+        <member name="P:Quick.Communication.PipeBase.IsRunning">
+            <summary>
+            Gets a value indicating the running status of the pipe.
+            </summary>
+            <returns>true if the pipe is running; otherwise, false. The default is false.</returns>
+        </member>
+        <member name="P:Quick.Communication.PipeBase.Status">
+            <summary>
+            Gets the client status of the pipe
+            </summary>
+            <returns>The client status of the pipe. The default is ClientStatus.Closed.</returns>
+        </member>
+        <member name="E:Quick.Communication.PipeBase.MessageReceived">
+            <summary>
+            Represents the method that will handle the message received event of a Quick.Communication.PipeBase object.
+            </summary>
+        </member>
+        <member name="E:Quick.Communication.PipeBase.ClientStatusChanged">
+            <summary>
+            Represents the method that will handle the client status changed event of a Quick.Communication.PipeBase object.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.PipeBase.SendMessage(System.Byte[])">
+            <summary>
+            Sends the specified message data to a connected pipe client.
+            </summary>
+            <param name="messageData">the message to be sent.</param>
+        </member>
+        <member name="M:Quick.Communication.PipeBase.SendText(System.String,System.Text.Encoding)">
+            <summary>
+            Sends the specified message text to a connected pipe client.
+            </summary>
+            <param name="text">The text to be sent.</param>
+            <param name="textEncoding">The text encoding in pipe communication.</param>
+        </member>
+        <member name="M:Quick.Communication.PipeBase.SendText(System.String)">
+            <summary>
+            Sends the specified message text to a connected pipe client using default text encoding, see TextEncoding property.
+            </summary>
+            <param name="text">The text to be sent.</param>
+        </member>
+        <member name="T:Quick.Communication.PipeClientStatusChangedEventArgs">
+            <summary>
+            Provides data for the Quick.Communication.PipeBase.ClientStatusChanged event.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.PipeClientStatusChangedEventArgs.Status">
+            <summary>
+            Gets or sets the client status.
+            </summary>
+            <returns>The client status. The default is ClientStatus.Closed.</returns>
+        </member>
+        <member name="T:Quick.Communication.PipeClient">
+            <summary>
+            Represents a pipe client object that derived from Quick.Communication.PipeBase
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.PipeClient.Connect(System.String)">
+            <summary>
+            Connect to a named pipe
+            </summary>
+            <param name="pipeName">The pipe name to connect</param>
+        </member>
+        <member name="M:Quick.Communication.PipeClient.Close">
+            <summary>
+            Close the pipe connection 
+            </summary>
+        </member>
+        <member name="T:Quick.Communication.PipeServer">
+            <summary>
+            Represents a pipe server object that derived from Quick.Communication.PipeBase
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.PipeServer.Start(System.String)">
+            <summary>
+            Start pipe server using a specific name.
+            </summary>
+            <param name="pipeName">The pipe name for starting a pipe server.</param>
+        </member>
+        <member name="M:Quick.Communication.PipeServer.Stop">
+            <summary>
+            Stop the pipe server.
+            </summary>
+        </member>
+        <member name="T:Quick.Communication.DataMessageReceivedEventArgs">
+            <summary>
+            Provides data for the DataMessageReceived event.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.DataMessageReceivedEventArgs.#ctor(System.Byte[])">
+            <summary>
+            Create an instance of DataMessageReceivedEventArgs class
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="P:Quick.Communication.DataMessageReceivedEventArgs.Data">
+            <summary>
+            Gets or sets the data of the event args.
+            </summary>
+            <returns>The data of the event args.</returns>
+        </member>
+        <member name="T:Quick.Communication.ShareMemoryBase">
+            <summary>
+            Represents a base class of share memory communication
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.ShareMemoryBase.#ctor(System.String,System.Int32)">
+            <summary>
+            Initializes a new instance of the Quick.Communication.ShareMemoryBase
+            </summary>
+            <param name="uniqueName">An unique name for share memory communication</param>
+            <param name="bufferSize">The buffer size of the share memory</param>
+        </member>
+        <member name="P:Quick.Communication.ShareMemoryBase.IsOpen">
+            <summary>
+            Gets the value indicating the status of the share memory.
+            </summary>
+            <returns>true if the share memory is open; otherwise, false. The default is false.</returns>
+        </member>
+        <member name="P:Quick.Communication.ShareMemoryBase.TextEncoding">
+            <summary>
+            Gets or sets the encoding when transmitting text in share memory communication.
+            </summary>
+            <returns>The encoding when transmitting text in share memory communication. The default is UTF8.</returns>
+        </member>
+        <member name="T:Quick.Communication.ShareMemoryDuplex">
+            <summary>
+            Represents a ShareMemoryDuplex object that used for process communication with share memory.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.ShareMemoryDuplex.#ctor(System.Boolean,System.String,System.Int32)">
+            <summary>
+            Create an instance of ShareMemoryDuplex
+            </summary>
+            <param name="isServer">True if used as server, otherwise false.</param>
+            <param name="uniqueName">The unique name of share memory to create.</param>
+            <param name="bufferSize">The buffer size of share memory.</param>
+        </member>
+        <member name="E:Quick.Communication.ShareMemoryDuplex.MessageReceived">
+            <summary>
+            Represents the method that will handle the message received event of a Quick.Communication.ShareMemoryDuplex object.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.ShareMemoryDuplex.IsOpen">
+            <summary>
+            Gets the value indicating the status of the share memory.
+            </summary>
+            <returns>true if the share memory is open; otherwise, false. The default is false.</returns>
+        </member>
+        <member name="P:Quick.Communication.ShareMemoryDuplex.TextEncoding">
+            <summary>
+            Gets or sets the text encoding when sending text message.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.ShareMemoryDuplex.Open">
+            <summary>
+            Open the share memory
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.ShareMemoryDuplex.SendMessage(System.Byte[])">
+            <summary>
+            
+            </summary>
+            <param name="messageData"></param>
+        </member>
+        <member name="M:Quick.Communication.ShareMemoryDuplex.SendText(System.String)">
+            <summary>
+            Send message text to share memory reader using default encoding, see TextEncoding property.
+            </summary>
+            <param name="text">The text to be sent.</param>
+        </member>
+        <member name="M:Quick.Communication.ShareMemoryDuplex.SendText(System.String,System.Text.Encoding)">
+            <summary>
+            Send message text to share memory reader using specific encoding.
+            </summary>
+            <param name="text">The text to be sent.</param>
+            <param name="encoding">The text encoding in share memory communciation.</param>
+        </member>
+        <member name="M:Quick.Communication.ShareMemoryDuplex.Close">
+            <summary>
+            Close share memory.
+            </summary>
+        </member>
+        <member name="T:Quick.Communication.ShareMemoryReader">
+            <summary>
+            Represents a ShareMemoryReader object that derived from Quick.Communication.ShareMemoryBase
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.ShareMemoryReader.#ctor(System.String,System.Int32)">
+            <summary>
+            Initializes a new instance of the Quick.Communication.ShareMemoryReader
+            </summary>
+            <param name="uniqueName">An unique name for share memory communication</param>
+            <param name="bufferSize">The buffer size of the share memory</param>
+        </member>
+        <member name="E:Quick.Communication.ShareMemoryReader.MessageReceived">
+            <summary>
+            Represents the method that will handle the message received event of a Quick.Communication.ShareMemoryReader object.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.ShareMemoryReader.Open">
+            <summary>
+            Open the share memory
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.ShareMemoryReader.Close">
+            <summary>
+            Close the share memory
+            </summary>
+        </member>
+        <member name="T:Quick.Communication.ShareMemoryWriter">
+            <summary>
+            Represents a ShareMemoryWriter object that derived from Quick.Communication.ShareMemoryBase
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.ShareMemoryWriter.#ctor(System.String,System.Int32)">
+            <summary>
+            Initializes a new instance of the Quick.Communication.ShareMemoryWriter
+            </summary>
+            <param name="uniqueName">An unique name for share memory communication</param>
+            <param name="bufferSize">The buffer size of the share memory</param>
+        </member>
+        <member name="M:Quick.Communication.ShareMemoryWriter.Open">
+            <summary>
+            Open the share memory.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.ShareMemoryWriter.SendMessage(System.Byte[])">
+            <summary>
+            Send message data to share memory reader.
+            </summary>
+            <param name="messageData">The message data be sent.</param>
+        </member>
+        <member name="M:Quick.Communication.ShareMemoryWriter.SendText(System.String)">
+            <summary>
+            Send message text to share memory reader using default encoding, see TextEncoding property.
+            </summary>
+            <param name="text">The text to be sent.</param>
+        </member>
+        <member name="M:Quick.Communication.ShareMemoryWriter.SendText(System.String,System.Text.Encoding)">
+            <summary>
+            Send message text to share memory reader using specific encoding.
+            </summary>
+            <param name="text">The text to be sent.</param>
+            <param name="encoding">The text encoding in share memory communciation.</param>
+        </member>
+        <member name="M:Quick.Communication.ShareMemoryWriter.Close">
+            <summary>
+            Close share memory.
+            </summary>
+        </member>
+        <member name="T:Quick.Communication.PipeRpcClient">
+            <summary>
+            Represents the client in pipeline RPC communication.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.PipeRpcClient.#ctor">
+            <summary>
+            Create an instance of PipeRpcClient class.
+            </summary>
+        </member>
+        <member name="E:Quick.Communication.PipeRpcClient.RpcReturnDataReceived">
+            <summary>
+            The event will be triggered when RPC return data received.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.PipeRpcClient.RegisterClientServiceProxy``1">
+            <summary>
+            Register the service proxy type to the channel.
+            </summary>
+            <typeparam name="TService">The service proxy type that will be called by user.</typeparam>
+        </member>
+        <member name="M:Quick.Communication.PipeRpcClient.UnRegisterClientServiceProxy``1">
+            <summary>
+            UnRegister the service proxy type in the channel.
+            </summary>
+            <typeparam name="TService">The service proxy type that will be called by user.</typeparam>
+        </member>
+        <member name="M:Quick.Communication.PipeRpcClient.GetClientServiceProxy``1">
+            <summary>
+            Get the service proxy from the channel.The user can use the service proxy to call RPC service.
+            </summary>
+            <typeparam name="TService">The service proxy type that will be called by user.</typeparam>
+            <returns>The instance of the service proxy.</returns>
+        </member>
+        <member name="T:Quick.Communication.PipeRpcServer">
+            <summary>
+            Represents the server in pipeline PRC communication.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.PipeRpcServer.#ctor">
+            <summary>
+            Create an instance of PipeRpcServer class.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.PipeRpcServer.AddServerService``1(``0)">
+            <summary>
+            Add service to RPC server container.
+            </summary>
+            <typeparam name="TInterface">The interface of service.</typeparam>
+            <param name="instance">The instance of the service that implement the TInterface.</param>
+        </member>
+        <member name="M:Quick.Communication.PipeRpcServer.AddServerService``1(System.Func{``0})">
+            <summary>
+            Add service to RPC server container.
+            </summary>
+            <typeparam name="TInterface">The interface of service.</typeparam>
+            <param name="constructor">The func delegate used to create service instance.</param>
+        </member>
+        <member name="T:Quick.Communication.TcpRpcClient">
+            <summary>
+            Represents the client in tcp RPC communication.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.TcpRpcClient.#ctor(System.Boolean)">
+            <summary>
+            Initializes a new instance of the Quick.Communication.TcpClientEx using default packet spliter. 
+            The default packet spliter is SimplePacketSpliter().
+            </summary>
+            <param name="autoReconnect">true if use auto reconnect feature; otherwise, false.</param>
+        </member>
+        <member name="M:Quick.Communication.TcpRpcClient.#ctor(Quick.Communication.IPacketSpliter)">
+            <summary>
+            Initializes a new instance of the Quick.Communication.TcpClientEx using specific packet spliter without auto reconnect feature.
+            </summary>
+            <param name="packetSpliter">The spliter which is used to split stream data into packets.</param>
+        </member>
+        <member name="M:Quick.Communication.TcpRpcClient.#ctor(System.Boolean,Quick.Communication.IPacketSpliter)">
+            <summary>
+            Initializes a new instance of the Quick.Communication.TcpClientEx.
+            </summary>
+            <param name="autoReconnect">true if use auto reconnect feature; otherwise, false.</param>
+            <param name="packetSpliter">The spliter which is used to split stream data into packets.</param>
+        </member>
+        <member name="E:Quick.Communication.TcpRpcClient.RpcReturnDataReceived">
+            <summary>
+            The event will be triggered when RPC return data received.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.TcpRpcClient.ReceivedMessageFilter(Quick.Communication.MessageReceivedEventArgs)">
+            <summary>
+            Override the function to pass the received data to rpc event handler.
+            </summary>
+            <param name="tcpRawMessageArgs">A message received from RPC server.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Quick.Communication.TcpRpcClient.RegisterClientServiceProxy``1">
+            <summary>
+            Register the service proxy type to the channel.
+            </summary>
+            <typeparam name="TService">The service proxy type that will be called by user.</typeparam>
+        </member>
+        <member name="M:Quick.Communication.TcpRpcClient.UnRegisterClientServiceProxy``1">
+            <summary>
+            UnRegister the service proxy type in the channel.
+            </summary>
+            <typeparam name="TService">The service proxy type that will be called by user.</typeparam>
+        </member>
+        <member name="M:Quick.Communication.TcpRpcClient.GetClientServiceProxy``1">
+            <summary>
+            Get the service proxy from the channel.The user can use the service proxy to call RPC service.
+            </summary>
+            <typeparam name="TService">The service proxy type that will be called by user.</typeparam>
+            <returns>The instance of the service proxy.</returns>
+        </member>
+        <member name="T:Quick.Communication.TcpRpcServer">
+            <summary>
+            Represents the server in tcp RPC communication.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.TcpRpcServer.#ctor(Quick.Communication.IPacketSpliter)">
+            <summary>
+            Initializes a new instance of the Quick.Communication.RpcServer using specific packet spliter.
+            </summary>
+            <param name="packetSpliter">The spliter used to split stream data into complete packets.</param>
+        </member>
+        <member name="M:Quick.Communication.TcpRpcServer.#ctor">
+            <summary>
+            Create an instance of TcpRpcServer() class.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.TcpRpcServer.ReceivedMessageFilter(Quick.Communication.MessageReceivedEventArgs)">
+            <summary>
+            Override the function to pass the request data to rpc call handler.
+            </summary>
+            <param name="tcpRawMessageArgs">A request message from RPC client.</param>
+            <returns>If true, message delivery to continue. Otherwise false.</returns>
+        </member>
+        <member name="M:Quick.Communication.TcpRpcServer.AddServerService``1(``0)">
+            <summary>
+            Add service to RPC server container.
+            </summary>
+            <typeparam name="TInterface">The interface of service.</typeparam>
+            <param name="instance">The instance of the service that implement the TInterface.</param>
+        </member>
+        <member name="M:Quick.Communication.TcpRpcServer.AddServerService``1(System.Func{``0})">
+            <summary>
+            Add service to RPC server container.
+            </summary>
+            <typeparam name="TInterface">The interface of service.</typeparam>
+            <param name="constructor">The func delegate used to create service instance.</param>
+        </member>
+        <member name="T:Quick.Communication.UdpRpcClient">
+            <summary>
+            Represents the client in udp RPC communication.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.UdpRpcClient.#ctor">
+            <summary>
+            Create an instance of UdpRpcClient class.
+            </summary>
+        </member>
+        <member name="E:Quick.Communication.UdpRpcClient.RpcReturnDataReceived">
+            <summary>
+            The event will be triggered when RPC return data received.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.UdpRpcClient.RegisterClientServiceProxy``1(System.String,System.Int32)">
+            <summary>
+            Register the service proxy type to the channel.
+            </summary>
+            <param name="ipAddress">The ip address of the RPC server.</param>
+            <param name="port">The port of the RPC server.</param>
+        </member>
+        <member name="M:Quick.Communication.UdpRpcClient.UnRegisterClientServiceProxy``1">
+            <summary>
+            UnRegister the service proxy type in the channel.
+            </summary>
+            <typeparam name="TService">The service proxy type that will be called by user.</typeparam>
+        </member>
+        <member name="M:Quick.Communication.UdpRpcClient.GetClientServiceProxy``1">
+            <summary>
+            Get the service proxy from the channel.The user can use the service proxy to call RPC service.
+            </summary>
+            <typeparam name="TService">The service proxy type that will be called by user.</typeparam>
+            <returns>The instance of the service proxy.</returns>
+        </member>
+        <member name="T:Quick.Communication.UdpRpcServer">
+            <summary>
+            Represents the server in udp RPC communication.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.UdpRpcServer.#ctor">
+            <summary>
+            Create an instance of UdpRpcServer class.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.UdpRpcServer.AddServerService``1(``0)">
+            <summary>
+            Add service to RPC server container.
+            </summary>
+            <typeparam name="TInterface">The interface of service.</typeparam>
+            <param name="instance">The instance of the service that implement the TInterface.</param>
+        </member>
+        <member name="M:Quick.Communication.UdpRpcServer.AddServerService``1(System.Func{``0})">
+            <summary>
+            Add service to RPC server container.
+            </summary>
+            <typeparam name="TInterface">The interface of service.</typeparam>
+            <param name="constructor">The func delegate used to create service instance.</param>
+        </member>
+        <member name="T:Quick.Communication.EndMarkPacketSpliter">
+            <summary>
+            Represents an object that implements interface of IPacketSpliter, 
+            which provides methods to split data into packets using end mark
+            |  Message  | End Mark |
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.EndMarkPacketSpliter.#ctor(System.Boolean,System.Byte[])">
+            <summary>
+            Initializes a new instance of the Quick.Communication.EndMarkPacketSpliter
+            </summary>
+            <param name="includeEndMark">true to include end mark in output packet; otherwise, false.</param>
+            <param name="endMark">The end mark in bytes to split data into packet.</param>
+        </member>
+        <member name="M:Quick.Communication.EndMarkPacketSpliter.#ctor(System.Boolean,System.String)">
+            <summary>
+            Initializes a new instance of the Quick.Communication.EndMarkPacketSpliter
+            </summary>
+            <param name="includeEndMark">true to include end mark in output packet; otherwise, false.</param>
+            <param name="endMarkText">The end mark in string to split data into packet.</param>
+        </member>
+        <member name="M:Quick.Communication.EndMarkPacketSpliter.#ctor(System.Boolean,System.String,System.Text.Encoding)">
+            <summary>
+            Initializes a new instance of the Quick.Communication.EndMarkPacketSpliter
+            </summary>
+            <param name="includeEndMark">true to include end mark in output packet; otherwise, false.</param>
+            <param name="endMarkText">The end mark in string to split data into packet.</param>
+            <param name="encoding">The end mark text encoding.</param>
+        </member>
+        <member name="P:Quick.Communication.EndMarkPacketSpliter.UseMakePacket">
+            <summary>
+            Gets or sets a value indicating whether to use MakePacket method. 
+            </summary>
+            <returns>true if use MakePacket method; otherwise, false.The default is true.</returns>
+        </member>
+        <member name="M:Quick.Communication.EndMarkPacketSpliter.GetPackets(System.Byte[],System.Int32,System.Int32,System.Int64,System.Int32@)">
+            <summary>
+            Get packets from a buffer by finding end mark.
+            </summary>
+            <param name="streamBuffer">The source buffer to create packets.</param>
+            <param name="offset">The starting offset of the buffer to create packets.</param>
+            <param name="count">The count of the data to create packets.</param>
+            <param name="clientID">The client id of the data.</param>
+            <param name="endPos">When this method returns, contains the position of the last end mark, if the buffer has 
+            one complete packet at least, or null if the end mark is not found.</param>
+            <returns>The packets list if the end mark is found; otherwise, null.</returns>
+        </member>
+        <member name="M:Quick.Communication.EndMarkPacketSpliter.MakePacket(System.Byte[],System.Int32,System.Int32,Quick.Communication.DynamicBufferStream)">
+            <summary>
+            Convert a message to a packet using end mark.
+            </summary>
+            <param name="messageData">The message data to convert.</param>
+            <param name="offset">The offset of the message data.</param>
+            <param name="count">The count of bytes to convert.</param>
+            <param name="sendBuffer">The send buffer which is associated with each connection. It is used to avoid allocating memory every time.</param>
+            <returns>The packed byte array segment with end mark if UseMakePacket property is true; otherwise the input message data with doing nothing.</returns>
+        </member>
+        <member name="T:Quick.Communication.FriendlyPacketSpliter">
+            <summary>
+            Represents a class that implements interface of IPacketSpliter, 
+            which provides simple abstract methods to split data into packets.
+            The user can derive from this class to make a new class that implemented IPacketSpliter interface easily.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.FriendlyPacketSpliter.GetPackets(System.Byte[],System.Int32,System.Int32,System.Int64,System.Int32@)">
+            <summary>
+            Get packets from the buffer
+            </summary>
+            <param name="streamBuffer">The source buffer to create packets.</param>
+            <param name="offset">The starting offset of the buffer to create packets.</param>
+            <param name="count">The count of the data to create packets.</param>
+            <param name="clientID">The client id of the data.</param>
+            <param name="endPos">When this method returns, contains the position of the packet ending, if the buffer has 
+            one complete packet at least, or null if the packet is not complete.</param>
+            <returns>The packets list if has complete packet; otherwise, null.</returns>
+        </member>
+        <member name="M:Quick.Communication.FriendlyPacketSpliter.MakePacket(System.Byte[],System.Int32,System.Int32,Quick.Communication.DynamicBufferStream)">
+            <summary>
+            Convert a message to a packet
+            </summary>
+            <param name="messageData">The message data to convert.</param>
+            <param name="offset">The offset of the message data.</param>
+            <param name="count">The count of bytes to convert.</param>
+            <param name="sendBuffer">The send buffer which is associated with each connection. It is used to avoid allocating memory every time.</param>
+            <returns>The packed byte array segment</returns>
+        </member>
+        <member name="M:Quick.Communication.FriendlyPacketSpliter.TryGetPacketSize(System.Byte[])">
+            <summary>
+            Try to get the length of the packet from the data buffer
+            </summary>
+            <param name="receivedData">The received data from buffer.</param>
+            <returns>return -1 if the size of the packet is not decided, otherwise the size of the entire packet, include the header and content.</returns>
+        </member>
+        <member name="M:Quick.Communication.FriendlyPacketSpliter.MakePacket(System.Byte[])">
+            <summary>
+            Make a sending packet from business data.
+            </summary>
+            <param name="toSendData">The business data to be sent</param>
+            <returns>The entire packet to be sent.</returns>
+        </member>
+        <member name="T:Quick.Communication.HeaderPacketSpliter">
+            <summary>
+            Represents an object that implements interface of IPacketSpliter, 
+            which provides methods to split data into packets using length and specific header
+            |  Header(4bytes)  | Message Length(4bytes) | Message |
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.HeaderPacketSpliter.#ctor(System.Boolean,System.UInt32)">
+            <summary>
+            Initializes a new instance of the Quick.Communication.HeaderPacketSpliter
+            </summary>
+            <param name="useNetworkByteOrder">true to pack length in network byte order; otherwise, int host byte order.</param>
+            <param name="headerTag">A 32-bit integer as packet header tag to prevent illegal network data.</param>
+        </member>
+        <member name="M:Quick.Communication.HeaderPacketSpliter.#ctor(System.UInt32)">
+            <summary>
+            Initializes a new instance of the Quick.Communication.HeaderPacketSpliter
+            </summary>
+            <param name="headerTag">A 32-bit integer as packet header tag to prevent illegal network data.</param>
+        </member>
+        <member name="P:Quick.Communication.HeaderPacketSpliter.UseNetworkByteOrder">
+            <summary>
+            Gets or sets a value indicating whether to use network byte order
+            </summary>
+            <returns>true to pack length in network byte order; otherwise, in host byte order.The default is false.</returns>
+        </member>
+        <member name="P:Quick.Communication.HeaderPacketSpliter.UseMakePacket">
+            <summary>
+            Gets or sets a value indicating whether to use MakePacket method. 
+            </summary>
+            <returns>true if use MakePacket method; otherwise, false.The default is true.</returns>
+        </member>
+        <member name="P:Quick.Communication.HeaderPacketSpliter.MaxPacketLength">
+            <summary>
+            Gets or sets the max packet length.
+            </summary>
+            <returns>The max packet length. The default is 20MB.</returns>
+        </member>
+        <member name="M:Quick.Communication.HeaderPacketSpliter.MakePacket(System.Byte[],System.Int32,System.Int32,Quick.Communication.DynamicBufferStream)">
+            <summary>
+            Convert a message to a packet using packet length and specific header
+            </summary>
+            <param name="messageData">The message data to convert.</param>
+            <param name="offset">The offset of the message data.</param>
+            <param name="count">The count of bytes to convert.</param>
+            <param name="sendBuffer">The send buffer which is associated with each connection. It is used to avoid allocating memory every time.</param>
+            <returns>The packed byte array segment with length and header tag if UseMakePacket property is true; otherwise the input message data with doing nothing.</returns>
+        </member>
+        <member name="M:Quick.Communication.HeaderPacketSpliter.GetPackets(System.Byte[],System.Int32,System.Int32,System.Int64,System.Int32@)">
+            <summary>
+            Get packets from the buffer using packet length and specific header
+            </summary>
+            <param name="streamBuffer">The source buffer to create packets.</param>
+            <param name="offset">The starting offset of the buffer to create packets.</param>
+            <param name="count">The count of the data to create packets.</param>
+            <param name="clientID">The client id of the data.</param>
+            <param name="endPos">When this method returns, contains the position of the packet ending, if the buffer has 
+            one complete packet at least, or null if the packet is not complete.</param>
+            <returns>The packets list if has complete packet; otherwise, null.</returns>
+        </member>
+        <member name="T:Quick.Communication.IPacketSpliter">
+            <summary>
+            Provide methods to split stream data into packets or convert message data into packet for sending.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.IPacketSpliter.GetPackets(System.Byte[],System.Int32,System.Int32,System.Int64,System.Int32@)">
+            <summary>
+            Get packets from a buffer
+            </summary>
+            <param name="streamBuffer">The source buffer to create packets.</param>
+            <param name="offset">The starting offset of the buffer to create packets.</param>
+            <param name="count">The count of the data to create packets.</param>
+            <param name="clientID">The client id of the data.</param>
+            <param name="endPos">When this method returns, contains the position of the packet ending if the buffer has 
+            one complete packet at least, or zero if the end mark is not found.</param>
+            <returns>The packets list if the buffer has complete packet; otherwise, null.</returns>
+        </member>
+        <member name="M:Quick.Communication.IPacketSpliter.MakePacket(System.Byte[],System.Int32,System.Int32,Quick.Communication.DynamicBufferStream)">
+            <summary>
+            Convert a message to a packet using end mark.
+            </summary>
+            <param name="messageData">The message data to convert.</param>
+            <param name="offset">The offset of the message data.</param>
+            <param name="count">The count of bytes to convert.</param>
+            <param name="sendBuffer">The send buffer which is associated with each connection. It is used to avoid allocating memory every time.</param>
+            <returns>The packed array segment.</returns>
+        </member>
+        <member name="T:Quick.Communication.RawPacketSpliter">
+            <summary>
+            Represents an object that implements interface of IPacketSpliter, 
+            which transmit all data with doing nothing.
+            |  Raw Data Stream |
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.RawPacketSpliter.Default">
+            <summary>
+            The static default instance of Quick.Communication.RawPacketSpliter
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.RawPacketSpliter.GetPackets(System.Byte[],System.Int32,System.Int32,System.Int64,System.Int32@)">
+            <summary>
+            Get packets from a buffer directly.
+            </summary>
+            <param name="streamBuffer">The source buffer to create packets.</param>
+            <param name="offset">The starting offset of the buffer to create packets.</param>
+            <param name="count">The count of the data to create packets.</param>
+            <param name="clientID">The client id of the data.</param>
+            <param name="endPos">When this method returns, contains the position of the packet ending if the buffer has 
+            one complete packet at least, or zero if the end mark is not found.</param>
+            <returns>The packets list that contains input buffer.</returns>
+        </member>
+        <member name="M:Quick.Communication.RawPacketSpliter.MakePacket(System.Byte[],System.Int32,System.Int32,Quick.Communication.DynamicBufferStream)">
+            <summary>
+            Make a message into packet with doing nothing.
+            </summary>
+            <param name="messageData">The message data to convert.</param>
+            <param name="offset">The offset of the message data.</param>
+            <param name="count">The count of bytes to convert.</param>
+            <param name="sendBuffer">The send buffer which is associated with each connection. It is not used is this spliter.</param>
+            <returns>The same packed byte array segment as input.</returns>
+        </member>
+        <member name="T:Quick.Communication.SimplePacketSpliter">
+            <summary>
+            Represents an object that implements interface of IPacketSpliter, 
+            which provides methods to split data into packets using length at the begining of the packet
+            | Message Length(4bytes) | Message |
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.SimplePacketSpliter.#ctor(System.Boolean)">
+            <summary>
+            Initializes a new instance of the Quick.Communication.SimplePacketSpliter
+            </summary>
+            <param name="useNetworkByteOrder">true to pack length in network byte order; otherwise, int host byte order.</param>
+        </member>
+        <member name="M:Quick.Communication.SimplePacketSpliter.#ctor">
+            <summary>
+            Initializes a new instance of the Quick.Communication.SimplePacketSpliter
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.SimplePacketSpliter.UseNetworkByteOrder">
+            <summary>
+            Gets or sets a value indicating whether to use network byte order
+            </summary>
+            <returns>true to pack length in network byte order; otherwise, in host byte order.The default is false.</returns>
+        </member>
+        <member name="P:Quick.Communication.SimplePacketSpliter.UseMakePacket">
+            <summary>
+            Gets or sets a value indicating whether to use MakePacket method. 
+            </summary>
+            <returns>true if use MakePacket method; otherwise, false.The default is true.</returns>
+        </member>
+        <member name="P:Quick.Communication.SimplePacketSpliter.MaxPacketLength">
+            <summary>
+            Gets or sets the max packet length.
+            </summary>
+            <returns>The max packet length. The default is 20MB.</returns>
+        </member>
+        <member name="M:Quick.Communication.SimplePacketSpliter.MakePacket(System.Byte[],System.Int32,System.Int32,Quick.Communication.DynamicBufferStream)">
+            <summary>
+            Convert a message to a packet using packet length
+            </summary>
+            <param name="messageData">The message data to convert.</param>
+            <param name="offset">The offset of the message data.</param>
+            <param name="count">The count of bytes to convert.</param>
+            <param name="sendBuffer">The send buffer which is associated with each connection. It is used to avoid allocating memory every time.</param>
+            <returns>The packed byte array segment with length if UseMakePacket property is true; otherwise the input message data with doing nothing.</returns>
+        </member>
+        <member name="M:Quick.Communication.SimplePacketSpliter.GetPackets(System.Byte[],System.Int32,System.Int32,System.Int64,System.Int32@)">
+            <summary>
+            Get packets from the buffer using packet length
+            </summary>
+            <param name="streamBuffer">The source buffer to create packets.</param>
+            <param name="offset">The starting offset of the buffer to create packets.</param>
+            <param name="count">The count of the data to create packets.</param>
+            <param name="clientID">The client id of the data.</param>
+            <param name="endPos">When this method returns, contains the position of the packet ending if the buffer has 
+            one complete packet at least, or null if the packet is not complete.</param>
+            <returns>The packets list if has complete packet; otherwise, null.</returns>
+        </member>
+        <member name="T:Quick.Communication.ClientContext">
+            <summary>
+            Represents a client context object.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.ClientContext.#ctor">
+            <summary>
+            Initializes a new instance of the Quick.Communication.ClientContext
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.ClientContext.Tag">
+            <summary>
+            Gets or sets the user data.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.ClientContext.ClientSocket">
+            <summary>
+            Gets or sets the basic Socket.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.ClientContext.ClientID">
+            <summary>
+            Gets or sets the client id in long type.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.ClientContext.IPEndPoint">
+            <summary>
+            Gets or sets the IPEndPoint of the client.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.ClientContext.ReceiveBuffer">
+            <summary>
+            Gets or sets the receive buffer.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.ClientContext.SendBuffer">
+            <summary>
+            Gets or sets the send buffer.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.ClientContext.Groups">
+            <summary>
+            Gets or sets the groups where the client is located.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.ClientContext.SockAsyncArgs">
+            <summary>
+            Gets or sets the SocketAsyncEventArgs
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.ClientContext.Status">
+            <summary>
+            Gets or sets the client status.
+            </summary>
+            <returns>The client status. The default is ClientStatus.Closed.</returns>
+        </member>
+        <member name="P:Quick.Communication.ClientContext.RecvRawMessage">
+            <summary>
+            Gets or sets the TcpRawMessage object to store received tcp data.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.ClientContext.RecvSpeedController">
+            <summary>
+            The speed controller for receiving.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.ClientContext.SendController">
+            <summary>
+            The speed controller for sending.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.ClientContext.Reset">
+            <summary>
+            Reset the object to init state.
+            </summary>
+        </member>
+        <member name="T:Quick.Communication.GroupTransmitMessage">
+            <summary>
+            The tcp message for transmiting to specifice groups.
+            </summary>
+        </member>
+        <member name="T:Quick.Communication.JoinGroupMessage">
+            <summary>
+            The tcp message for join specific groups.
+            </summary>
+        </member>
+        <member name="T:Quick.Communication.TcpBase">
+            <summary>
+            Represents a base class of tcp communication
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.TcpBase.IsRunning">
+            <summary>
+            Gets a value indicating whether the tcp is running.
+            </summary>
+            <returns>true if the tcp is running; otherwise, false. The default is false.</returns>
+        </member>
+        <member name="P:Quick.Communication.TcpBase.TextEncoding">
+            <summary>
+            Get or sets the text encoding in tcp communication.
+            </summary>
+            <returns>The text encoding int tcp communication. The default is UTF8.</returns>
+        </member>
+        <member name="P:Quick.Communication.TcpBase.PacketSpliter">
+            <summary>
+            Gets or sets the packet spliter which is used to split stream data.
+            </summary>
+            <returns>The packet spliter.</returns>
+        </member>
+        <member name="T:Quick.Communication.TcpClientConfig">
+            <summary>
+            Represents a tcp client configuration object.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.TcpClientConfig.#ctor">
+            <summary>
+            Initializes a new instance of the TcpClientConfig. 
+            The default SocketAsyncBufferSize is 64K, in bytes.
+            </summary>
+        </member>
+        <member name="T:Quick.Communication.TcpClientEx">
+            <summary>
+            Represents a tcp client object that derived from Quick.Communication.TcpBase
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.TcpClientEx.#ctor(System.Boolean)">
+            <summary>
+            Initializes a new instance of the Quick.Communication.TcpClientEx using default packet spliter. 
+            The default packet spliter is SimplePacketSpliter().
+            </summary>
+            <param name="autoReconnect">true if use auto reconnect feature; otherwise, false.</param>
+        </member>
+        <member name="M:Quick.Communication.TcpClientEx.#ctor(Quick.Communication.IPacketSpliter)">
+            <summary>
+            Initializes a new instance of the Quick.Communication.TcpClientEx using specific packet spliter without auto reconnect feature.
+            </summary>
+            <param name="packetSpliter">The spliter which is used to split stream data into packets.</param>
+        </member>
+        <member name="M:Quick.Communication.TcpClientEx.#ctor(System.Boolean,Quick.Communication.IPacketSpliter)">
+            <summary>
+            Initializes a new instance of the Quick.Communication.TcpClientEx.
+            </summary>
+            <param name="autoReconnect">true if use auto reconnect feature; otherwise, false.</param>
+            <param name="packetSpliter">The spliter which is used to split stream data into packets.</param>
+        </member>
+        <member name="P:Quick.Communication.TcpClientEx.ClientConfig">
+            <summary>
+            Gets the configuration of tcp client.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.TcpClientEx.Tag">
+            <summary>
+            Gets or sets an user defined object.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.TcpClientEx.ClientID">
+            <summary>
+            Gets or sets client id in long type.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.TcpClientEx.Status">
+            <summary>
+            Gets or sets client status.
+            </summary>
+            <returns>The client status. The default is ClientStatus.Closed.</returns>
+        </member>
+        <member name="P:Quick.Communication.TcpClientEx.ServerIPEndPoint">
+            <summary>
+            Gets or sets server ip end point.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.TcpClientEx.AutoReconnect">
+            <summary>
+            Gets or sets a value which can enable or disable auto reconnect feature.
+            Setting the property during running time will cause an exception.
+            </summary>
+            <returns>true if enable auto reconnect feature; otherwise, false. The default is false.</returns>
+        </member>
+        <member name="P:Quick.Communication.TcpClientEx.GroupArray">
+            <summary>
+            Gets the group array that the client has joined. The default is null.
+            </summary>
+        </member>
+        <member name="E:Quick.Communication.TcpClientEx.ClientStatusChanged">
+            <summary>
+            Represents the method that will handle the client status changed event of a Quick.Communication.TcpClientEx object.
+            </summary>
+        </member>
+        <member name="E:Quick.Communication.TcpClientEx.MessageReceived">
+            <summary>
+            Represents the method that will handle the message received event of a Quick.Communication.TcpClientEx object.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.TcpClientEx.SetTcpClientParam(Quick.Communication.TcpClientConfig)">
+            <summary>
+            Set tcp client parameter.
+            </summary>
+            <param name="clientConfig">The client parameter, see Quick.Communication.TcpClientParam.</param>
+        </member>
+        <member name="M:Quick.Communication.TcpClientEx.ConnectAsync(System.String,System.Int32,System.Action{System.Boolean})">
+            <summary>
+            Connect to tcp server in asynchronous mode.The default timeout is 5 seconds.
+            </summary>
+            <param name="ipAddress">The ip address of server in string type.</param>
+            <param name="port">The server listening port.</param>
+            <param name="callback">The callback after the connection completed. 
+            true if connected successfully; otherwise, false.</param>
+        </member>
+        <member name="M:Quick.Communication.TcpClientEx.ConnectAsync(System.String,System.Int32,System.Int32,System.Action{System.Boolean})">
+            <summary>
+            Connect to tcp server in asynchronous mode.
+            </summary>
+            <param name="ipAddress">The ip address of server in string type.</param>
+            <param name="port">The server listening port.</param>
+            <param name="timeout">The connection timeout in Millseconds.</param>
+            <param name="callback">The callback after the connection completed. 
+            true if connected successfully; otherwise, false.</param>
+        </member>
+        <member name="M:Quick.Communication.TcpClientEx.Connect(System.String,System.Int32,System.Int32)">
+            <summary>
+            Connect to tcp server in synchronous mode.
+            </summary>
+            <param name="ipAddress">The ip address of server in string type.</param>
+            <param name="port">The server listening port.</param>
+            <param name="timeOut">The timeout of the connection in Millseconds.The default is int.MaxValue.</param>
+            <returns>true if connected successfully; otherwise, false. </returns>
+        </member>
+        <member name="M:Quick.Communication.TcpClientEx.Close">
+            <summary>
+            Close tcp client to release all the resources.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.TcpClientEx.SendMessage(System.Byte[])">
+            <summary>
+            Send message data to server in synchronous mode.
+            </summary>
+            <param name="messageData">The message data to be sent.</param>
+            <returns>The number of bytes sent to the server.</returns>
+        </member>
+        <member name="M:Quick.Communication.TcpClientEx.SendMessage(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Send message data to server in synchronous mode.
+            </summary>
+            <param name="messageData">The message data to be sent.</param>
+            <param name="offset">The offset of the message data.</param>
+            <param name="count">The count of bytes to be sent.</param>
+            <returns>The number of bytes sent to the server.</returns>
+        </member>
+        <member name="M:Quick.Communication.TcpClientEx.SendText(System.String,System.Text.Encoding)">
+            <summary>
+            Send message text to server in synchronous mode with specific encoding.
+            </summary>
+            <param name="text">The message text to be sent.</param>
+            <param name="encoding">The text encoding in tcp communication.</param>
+        </member>
+        <member name="M:Quick.Communication.TcpClientEx.SendText(System.String)">
+            <summary>
+            Send message text to server in synchronous mode with default encoding, see TextEncoding property.
+            </summary>
+            <param name="text">The message text to be sent.</param>
+        </member>
+        <member name="M:Quick.Communication.TcpClientEx.JoinGroup(System.String[])">
+            <summary>
+            Join group after connected to the server. Make sure the server enable group feature before call this method.
+            </summary>
+            <param name="groupArray">The group array that the client to join.</param>
+        </member>
+        <member name="M:Quick.Communication.TcpClientEx.SendGroupMessage(System.Collections.Generic.IEnumerable{System.String},System.Byte[],System.Boolean)">
+            <summary>
+            Send message data to specific group collection in synchronous mode.
+            </summary>
+            <param name="groupNameCollection">The group collection to receive the message.</param>
+            <param name="messageData">The message data to be sent to group collection.</param>
+            <param name="loopBack">True if the message returns to the sender; otherwise false. The default is false.</param>
+            <returns>The number of bytes sent to the server.</returns>
+        </member>
+        <member name="M:Quick.Communication.TcpClientEx.SendGroupMessage(System.Collections.Generic.IEnumerable{System.String},System.Byte[],System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            Send message data to specific group collection in synchronous mode.
+            </summary>
+            <param name="groupNameCollection">The group collection to receive the message.</param>
+            <param name="messageData">The message data to be sent to group collection.</param>
+            <param name="offset">The offset of the message data.</param>
+            <param name="count">The count of bytes to be sent.</param>
+            <param name="loopBack">True if the message returns to the sender; otherwise false. The default is false.</param>
+            <returns>The number of bytes sent to the server.</returns>
+        </member>
+        <member name="M:Quick.Communication.TcpClientEx.SendGroupText(System.Collections.Generic.IEnumerable{System.String},System.String,System.Text.Encoding,System.Boolean)">
+            <summary>
+            Send message text to specific group collection in synchronous mode with specific encoding.
+            </summary>
+            <param name="groupNameCollection">The group collection to receive the message.</param>
+            <param name="text">The message text to be sent to group collection.</param>
+            <param name="encoding">The text encoding in tcp communication.</param>
+            <param name="loopBack">True if the message returns to the sender; otherwise false. The default is false.</param>
+        </member>
+        <member name="M:Quick.Communication.TcpClientEx.SendGroupText(System.Collections.Generic.IEnumerable{System.String},System.String,System.Boolean)">
+            <summary>
+            Send message text to specific group collection in synchronous mode with default encoding, see TextEncoding property.
+            </summary>
+            <param name="groupNameCollection">The group collection to receive the message.</param>
+            <param name="text">The message text to be sent to group collection.</param>
+            <param name="loopBack">True if the message returns to the sender; otherwise false. The default is false.</param>
+        </member>
+        <member name="T:Quick.Communication.TcpConfig">
+            <summary>
+            Represents a base tcp parameter object.
+            </summary>
+        </member>
+        <member name="F:Quick.Communication.TcpConfig.NotLimited">
+            <summary>
+            A const value that indicates the speed is not limited.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.TcpConfig.EnableKeepAlive">
+            <summary>
+            Gets or sets a value indicating whether to enable keep alive or not.
+            </summary>
+            <returns>true if enable keep alive; otherwise, false; The default is true.</returns>
+        </member>
+        <member name="P:Quick.Communication.TcpConfig.KeepAliveTime">
+            <summary>
+            Gets or sets keep alive time in Millseconds, the property is only used when EnableKeepAlive is true.
+            </summary>
+            <returns>The keep alive time in Millseconds. The default is 3000.</returns>
+        </member>
+        <member name="P:Quick.Communication.TcpConfig.KeepAliveInterval">
+            <summary>
+            Gets or sets keep alive interval in Millseconds, the property is only used when EnableKeepAlive is true.
+            </summary>
+            <returns>The keep alive interval in Millseconds. The default is 3000.</returns>
+        </member>
+        <member name="P:Quick.Communication.TcpConfig.SocketAsyncBufferSize">
+            <summary>
+            Gets or sets the asynchronous socket buffer size. The default is 16K, in bytes.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.TcpConfig.ReceiveDataMaxSpeed">
+            <summary>
+            Gets or sets the limit speed for receiving, in bytes per second. 
+            If the value is less or equal to 0,receiving speed control is disabled.The default is NotLimited.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.TcpConfig.SendDataMaxSpeed">
+            <summary>
+            Gets or sets the limit speed for sending, in bytes per second. 
+            If the value is less or equal to 0, sending speed control is disabled.The default is NotLimited.
+            </summary>
+        </member>
+        <member name="T:Quick.Communication.TcpProxyChannel">
+            <summary>
+            Represents a simple TCP proxy that support data filter.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.TcpProxyChannel.#ctor">
+            <summary>
+            Create an instance of TcpProxyChannel
+            </summary>
+        </member>
+        <member name="E:Quick.Communication.TcpProxyChannel.ClientCountChanged">
+            <summary>
+            Represents the method that will handle the client count changed event of a SiS.Communication.Business.TcpProxyChannel object.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.TcpProxyChannel.RemoteIP">
+            <summary>
+            Gets or sets a value that indicates the ip address of remote server
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.TcpProxyChannel.RemotePort">
+            <summary>
+            Gets or sets a value that indicates the port of remote server
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.TcpProxyChannel.ListenPort">
+            <summary>
+            Gets or sets a value indicats the listening port of the proxy.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.TcpProxyChannel.IsRunning">
+            <summary>
+            Gets a value that indicates whether the proxy is running.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.TcpProxyChannel.DataFilter">
+            <summary>
+            Gets or sets data filtering interface
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.TcpProxyChannel.ClientCount">
+            <summary>
+            Gets or sets a value that indicates the count of clients.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.TcpProxyChannel.Start">
+            <summary>
+            Start proxy channel
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.TcpProxyChannel.Stop">
+            <summary>
+            Stop proxy channel
+            </summary>
+        </member>
+        <member name="T:Quick.Communication.ClientCountChangedEventHandler">
+            <summary>
+            Represents the method that will handle the tcp MessageReceived event.
+            </summary>
+            <param name="sender">The sender of the event.</param>
+            <param name="args">A SiS.Communication.Business.ClientCountChangedEventArgs object that contains the client count.</param>
+        </member>
+        <member name="T:Quick.Communication.ClientCountChangedEventArgs">
+            <summary>
+            Provides data for client count changed event.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.ClientCountChangedEventArgs.NewCount">
+            <summary>
+            The new count of clients.
+            </summary>
+        </member>
+        <member name="T:Quick.Communication.ITcpProxyDataFilter">
+            <summary>
+            The interface used for data filter.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.ITcpProxyDataFilter.BeforeClientToServer(Quick.Communication.TcpRawMessage)">
+            <summary>
+            The function will be called before client send message to server.
+            </summary>
+            <param name="clientMessage"></param>
+        </member>
+        <member name="M:Quick.Communication.ITcpProxyDataFilter.BeforeServerToClient(Quick.Communication.TcpRawMessage)">
+            <summary>
+            The function will be called before server send message to client.
+            </summary>
+            <param name="serverMessage"></param>
+        </member>
+        <member name="T:Quick.Communication.TcpRawMessage">
+            <summary>
+            Represents an raw tcp message object that received from the network.The data may be stored outside.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.TcpRawMessage.ClientID">
+            <summary>
+            The id of the client where the message from.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.TcpRawMessage.MessageRawData">
+            <summary>
+            Gets or sets the message raw data that received from the network.The raw data storage may use outside buffer.
+            </summary>
+            <returns>The message data received from the network.</returns>
+        </member>
+        <member name="T:Quick.Communication.TcpServer">
+            <summary>
+            Represents TCP server based on SocketAsyncEvent(IOCP)
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.TcpServer.#ctor">
+            <summary>
+            Initializes a new instance of the Quick.Communication.TcpServer.The default spliter is SimplePacketSpliter().
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.TcpServer.#ctor(Quick.Communication.IPacketSpliter)">
+            <summary>
+            Initializes a new instance of the Quick.Communication.TcpServer using specific packet spliter.
+            </summary>
+            <param name="packetSpliter">The spliter used to split stream data into complete packets.</param>
+        </member>
+        <member name="P:Quick.Communication.TcpServer.EnableGroup">
+            <summary>
+            Gets or sets a value indicating whether to enable group feature.
+            </summary>
+            <returns>true if enable group feature; otherwise, false. The default is false.</returns>
+        </member>
+        <member name="P:Quick.Communication.TcpServer.Clients">
+            <summary>
+            Get all clients.
+            </summary>
+        </member>
+        <member name="E:Quick.Communication.TcpServer.ClientStatusChanged">
+            <summary>
+            Represents the method that will handle the client status changed event of a Quick.Communication.TcpServer object.
+            </summary>
+        </member>
+        <member name="E:Quick.Communication.TcpServer.MessageReceived">
+            <summary>
+            Represents the method that will handle the message received event of a Quick.Communication.TcpServer object.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.TcpServer.AddClientToGroup(System.Int64,System.String)">
+            <summary>
+            Add a client to specific group.
+            </summary>
+            <param name="clientID">The client id.</param>
+            <param name="groupName">The group that the client to join.</param>
+        </member>
+        <member name="M:Quick.Communication.TcpServer.IsClientInGroup(System.Int64,System.String)">
+            <summary>
+            Get if the client is in specific group.
+            </summary>
+            <param name="clientID">The client id.</param>
+            <param name="groupName">The name of the group.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Quick.Communication.TcpServer.Start(System.Int32)">
+            <summary>
+            Start tcp server listening on a specific port.
+            </summary>
+            <param name="listenPort">The listening port of the server.</param>
+        </member>
+        <member name="M:Quick.Communication.TcpServer.Start(System.Int32,Quick.Communication.TcpServerConfig)">
+            <summary>
+            Start udp server listening on a specific port using TcpServerParam parameter.
+            </summary>
+            <param name="listenPort">The listening port of the server.</param>
+            <param name="serverConfig">The server's parameter, see TcpServerParam.</param>
+        </member>
+        <member name="M:Quick.Communication.TcpServer.Stop">
+            <summary>
+            Stop the server and release all the resources.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.TcpServer.GetClient(System.Int64)">
+            <summary>
+            Get one client context by client id.
+            </summary>
+            <param name="clientID">The client id in long type.</param>
+            <returns>The client context if the client exist; otherwise, null.</returns>
+        </member>
+        <member name="M:Quick.Communication.TcpServer.GetGroupClients(System.String)">
+            <summary>
+            Gets clients from specific group.
+            </summary>
+            <param name="groupName">The group of the clients.</param>
+            <returns>The list of the client context.</returns>
+        </member>
+        <member name="M:Quick.Communication.TcpServer.CloseClient(System.Int64)">
+            <summary>
+            Close client connection by client id.
+            </summary>
+            <param name="clientID">The client id to disconnect from the server.</param>
+        </member>
+        <member name="M:Quick.Communication.TcpServer.SendMessage(System.Int64,System.Byte[])">
+            <summary>
+            Send message data to specific client in synchronous mode.
+            </summary>
+            <param name="clientID">The client id to receive message.</param>
+            <param name="messageData">The message data to be sent.</param>
+            <returns>The number of bytes sent to the server.</returns>
+        </member>
+        <member name="M:Quick.Communication.TcpServer.SendMessage(System.Int64,System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Send message data to specific client in synchronous mode.
+            </summary>
+            <param name="clientID">The client id to receive message.</param>
+            <param name="offset">The offset of the message data.</param>
+            <param name="count">The count of bytes to be sent.</param>
+            <param name="messageData">The message data to be sent.</param>
+            <returns>The number of bytes sent to the server.</returns>
+        </member>
+        <member name="M:Quick.Communication.TcpServer.SendText(System.Int64,System.String)">
+            <summary>
+            Send message text to specific client in synchronous mode with default encoding, see TextEncoding property.
+            </summary>
+            <param name="clientID">The client id to send messsage.</param>
+            <param name="text">The message text to be sent.</param>
+            <returns>The number of bytes sent to the server.</returns>
+        </member>
+        <member name="M:Quick.Communication.TcpServer.BroadcastMessage(System.Byte[])">
+            <summary>
+            Send message data to all clients in asynchronous mode.
+            </summary>
+            <param name="messageData">The message data to be sent.</param>
+            <returns>An System.IAsyncResult collection that references the asynchronous send.</returns>
+        </member>
+        <member name="M:Quick.Communication.TcpServer.BroadcastMessage(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Send message data to all clients in asynchronous mode.
+            </summary>
+            <param name="messageData">The message data to be sent.</param>
+            <param name="offset">The offset of the message data.</param>
+            <param name="count">The count of bytes to be sent.</param>
+            <returns>An System.IAsyncResult collection that references the asynchronous send.</returns>
+        </member>
+        <member name="M:Quick.Communication.TcpServer.BroadcastText(System.String)">
+            <summary>
+            Send message text to all clients in asynchronous mode.
+            </summary>
+            <param name="text">The message text to be sent.</param>
+            <returns>An System.IAsyncResult collection that references the asynchronous send.</returns>
+        </member>
+        <member name="M:Quick.Communication.TcpServer.SendGroupMessage(System.Collections.Generic.IEnumerable{System.String},System.Byte[])">
+            <summary>
+            Send message data to specific clients.
+            </summary>
+            <param name="groupNameCollection">The group collection to receive the message.</param>
+            <param name="messageData">The message data to be sent.</param>
+            <returns>An System.IAsyncResult collection that references the asynchronous send.</returns>
+        </member>
+        <member name="M:Quick.Communication.TcpServer.SendGroupMessage(System.Collections.Generic.IEnumerable{System.String},System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Send message data to specific group collection.
+            </summary>
+            <param name="groupNameCollection">The group collection to receive the message.</param>
+            <param name="messageData">The message data to be sent to group collection.</param>
+            <param name="offset">The offset of the message data.</param>
+            <param name="count">The count of bytes to be sent.</param>
+        </member>
+        <member name="M:Quick.Communication.TcpServer.SendGroupText(System.Collections.Generic.IEnumerable{System.String},System.String)">
+            <summary>
+            Send message text to specific group collection with default encoding, see TextEncoding property.
+            </summary>
+            <param name="groupNameCollection">The group collection to receive the message.</param>
+            <param name="text">The message text to be sent.</param>
+        </member>
+        <member name="T:Quick.Communication.TcpServerConfig">
+            <summary>
+            Represents a tcp server configuration object.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.TcpServerConfig.Default">
+            <summary>
+            The default configuration of tcp server.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.TcpServerConfig.#ctor">
+            <summary>
+            Initializes a new instance of the TcpServerConfig. 
+            The default ReceiveDataMaxSpeed is 10M/S, in bytes.
+            The default SendDataMaxSpeed is 10M/S, in bytes.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.TcpServerConfig.MaxPendingCount">
+            <summary>
+            Gets or sets max pending count of listening.
+            </summary>
+            <returns>Max pending count of listening. The default is 100.</returns>
+        </member>
+        <member name="P:Quick.Communication.TcpServerConfig.MaxClientCount">
+            <summary>
+            Gets or sets the estimated max client count.The default is 100.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.TcpServerConfig.AllowCrossGroupMessage">
+            <summary>
+            Gets or sets a value indicating whether the message can be sent to groups that the client has not joined.
+            </summary>
+        </member>
+        <member name="T:Quick.Communication.TcpUtility">
+            <summary>
+            Provides common definitions and methods for tcp communication
+            </summary>
+        </member>
+        <member name="F:Quick.Communication.TcpUtility.JOIN_GROUP_MARK">
+            <summary>
+            A 32-bit unsigned integer that represents join group mark.
+            </summary>
+        </member>
+        <member name="F:Quick.Communication.TcpUtility.GROUP_TRANSMIT_MSG_MARK">
+            <summary>
+            A 32-bit unsigned integer that represents transmiting message to specific group except the sender.
+            </summary>
+        </member>
+        <member name="F:Quick.Communication.TcpUtility.GROUP_TRANSMIT_MSG_LOOP_BACK_MARK">
+            <summary>
+            A 32-bit unsigned integer that represents transmiting message to specific group.
+            </summary>
+        </member>
+        <member name="F:Quick.Communication.TcpUtility.MaxGroupDesLength">
+            <summary>
+            Max group description length in join group messge.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.TcpUtility.SetKeepAlive(System.Net.Sockets.Socket,System.UInt32,System.UInt32)">
+            <summary>
+            Set socket parameters for keep alive.
+            </summary>
+            <param name="socket">The socket to set keep alive parameter.</param>
+            <param name="keepAliveTime">The keep alive time.</param>
+            <param name="keepAliveInterval">The keep alive interval.</param>
+        </member>
+        <member name="T:Quick.Communication.ClientStatusChangedEventArgs">
+            <summary>
+            Provides data for tcp ClientStatusChanged event.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.ClientStatusChangedEventArgs.#ctor(System.Int64,System.Net.IPEndPoint,Quick.Communication.ClientStatus)">
+            <summary>
+            Create an instance of ClientStatusChangedEventArgs class.
+            </summary>
+            <param name="clientId">The client's id.</param>
+            <param name="ipEndPoint">The end point where the message is from.</param>
+            <param name="status">The client status.</param>
+        </member>
+        <member name="P:Quick.Communication.ClientStatusChangedEventArgs.ClientID">
+            <summary>
+            Gets or sets the client id in long type.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.ClientStatusChangedEventArgs.IPEndPoint">
+            <summary>
+            Gets or sets a value indicating the source IPEndPoint of the message.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.ClientStatusChangedEventArgs.Status">
+            <summary>
+            Gets or sets the client status.
+            </summary>
+            <returns>The client status. The default is ClientStatus.Closed.</returns>
+        </member>
+        <member name="T:Quick.Communication.MessageReceivedEventArgs">
+            <summary>
+            Provides data for tcp MessageReceived event.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.MessageReceivedEventArgs.#ctor(System.Int64,System.Exception)">
+            <summary>
+            Create an instance of MessageReceivedEventArgs class.
+            </summary>
+            <param name="clientId">The client's id</param>
+            <param name="error">The error occurred during the transfer.</param>
+        </member>
+        <member name="M:Quick.Communication.MessageReceivedEventArgs.#ctor(System.Int64,System.ArraySegment{System.Byte})">
+            <summary>
+            Create an instance of MessageReceivedEventArgs class.
+            </summary>
+            <param name="clientId">The client's id</param>
+            <param name="messageRawData">The received message in raw data</param>
+        </member>
+        <member name="P:Quick.Communication.MessageReceivedEventArgs.ClientID">
+            <summary>
+            Gets or sets the id of the client where the message from.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.MessageReceivedEventArgs.MessageRawData">
+            <summary>
+            Gets or sets the message raw data that received from the network.The raw data storage may use outside buffer.
+            </summary>
+            <returns>The message data received from the network.</returns>
+        </member>
+        <member name="P:Quick.Communication.MessageReceivedEventArgs.Error">
+            <summary>
+            Gets or sets the error of the message.
+            </summary>
+        </member>
+        <member name="T:Quick.Communication.UdpServer">
+            <summary>
+            Represents an easy object for udp communication.
+            </summary>
+        </member>
+        <member name="P:Quick.Communication.UdpServer.IsRunning">
+            <summary>
+            Gets a value indicating the running status of the udp server.
+            </summary>
+            <returns>true if the server is running; otherwise, false. The default is false.</returns>
+        </member>
+        <member name="P:Quick.Communication.UdpServer.TextEncoding">
+            <summary>
+            Gets or sets the encoding when transmitting text in udp communicaiton.
+            </summary>
+            <returns>The encoding when transmitting text in udp communication. The default is UTF8.</returns>
+        </member>
+        <member name="P:Quick.Communication.UdpServer.ServerPort">
+            <summary>
+            Gets the listening port.
+            </summary>
+        </member>
+        <member name="E:Quick.Communication.UdpServer.MessageReceived">
+            <summary>
+            Represents the method that will handle the message received event of a Quick.Communication.Udp.UdpServer object.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.UdpServer.Start(System.UInt16)">
+            <summary>
+            Start udp server listening on a specific port.
+            </summary>
+            <param name="port">The listening port of the server.</param>
+        </member>
+        <member name="M:Quick.Communication.UdpServer.Start(System.String,System.UInt16)">
+            <summary>
+            Start udp server listening on a specific port and join a mulitcast group.
+            </summary>
+            <param name="multicastAddress">The multicast address to join.</param>
+            <param name="nPort">The listening port of the server.</param>
+        </member>
+        <member name="M:Quick.Communication.UdpServer.Stop">
+            <summary>
+            Stop the udp server
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.UdpServer.SendMessage(System.Net.IPEndPoint,System.Byte[],System.Int32)">
+            <summary>
+            Send message data to specific IPEndPoint.
+            </summary>
+            <param name="ipEndPoint">The destination IPEndPoint where the message will be sent to.</param>
+            <param name="messageData">The message data for sending.</param>
+            <param name="length">The length of the message data for sending.</param>
+        </member>
+        <member name="M:Quick.Communication.UdpServer.SendText(System.Net.IPEndPoint,System.String,System.Text.Encoding)">
+            <summary>
+            Send message text to specific IPEndPoint.
+            </summary>
+            <param name="ipEndPoint">The destination IPEndPoint where the message will be sent to.</param>
+            <param name="text">The message text for sending.</param>
+            <param name="encoding">The encoding of the message text, see TextEncoding property.</param>
+        </member>
+        <member name="M:Quick.Communication.UdpServer.SendText(System.Net.IPEndPoint,System.String)">
+            <summary>
+            Send message text to specific IPEndPoint using default encoding.
+            </summary>
+            <param name="ipEndPoint">The destination IPEndPoint where the message will be sent to.</param>
+            <param name="text">The message text for sending.</param>
+        </member>
+        <member name="M:Quick.Communication.UdpServer.SendGroupMessage(System.Byte[],System.Int32,System.UInt16)">
+            <summary>
+            Send message data to multicast group listening on specific port.
+            </summary>
+            <param name="messageData">The message data to be sent.</param>
+            <param name="length">The length of the sending data.</param>
+            <param name="nPort">The multicast group port to receive the message.</param>
+        </member>
+        <member name="M:Quick.Communication.UdpServer.SendGroupMessage(System.Byte[],System.UInt16)">
+            <summary>
+            Send message data to multicast group listening on specific port.
+            </summary>
+            <param name="messageData">The message data to be sent.</param>
+            <param name="nPort">The multicast group port to receive the message.</param>
+        </member>
+        <member name="M:Quick.Communication.UdpServer.SendGroupText(System.String,System.Text.Encoding,System.UInt16)">
+            <summary>
+            Send message text to multicast group listening on specific port.
+            </summary>
+            <param name="text">The message text to be sent.</param>
+            <param name="encoding">The encoding of the message text.</param>
+            <param name="nPort">The multicast group port to receive the message.</param>
+        </member>
+        <member name="M:Quick.Communication.UdpServer.SendGroupText(System.String,System.UInt16)">
+            <summary>
+            Send message text to multicast group listening port using default text encoding.
+            </summary>
+            <param name="text">The message text to be sent.</param>
+            <param name="nPort">The multicast group port to receive the message.</param>
+        </member>
+        <member name="T:Quick.Communication.UdpMessageReceivedEventArgs">
+            <summary>
+            Provides data for udp MessageReceived event.
+            </summary>
+        </member>
+        <member name="M:Quick.Communication.UdpMessageReceivedEventArgs.#ctor(System.Net.IPEndPoint,System.Byte[])">
+            <summary>
+            Create an instance of UdpMessageReceivedEventArgs class.
+            </summary>
+            <param name="iPEndPoint">The ip end point where the message is from.</param>
+            <param name="messageData">The received message.</param>
+        </member>
+        <member name="P:Quick.Communication.UdpMessageReceivedEventArgs.IPEndPoint">
+            <summary>
+            Gets or sets the source IPEndPoint of the message.
+            </summary>
+            <returns>The source IPEndPoint of the message.</returns>
+        </member>
+        <member name="P:Quick.Communication.UdpMessageReceivedEventArgs.MessageData">
+            <summary>
+            Gets or sets the message data that received from the network.
+            </summary>
+            <returns>The message data received from the network.</returns>
+        </member>
+    </members>
+</doc>
