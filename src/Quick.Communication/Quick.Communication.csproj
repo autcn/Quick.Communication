@@ -9,6 +9,8 @@
     <PackageIcon>logo.png</PackageIcon>
     <RepositoryType>git</RepositoryType>
     <PackageTags>quick rpc tcp udp</PackageTags>
+    <RepositoryUrl>https://github.com/autcn/Quick.Communication</RepositoryUrl>
+    <Version>1.0.0-beta.1</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
