@@ -75,9 +75,9 @@ namespace Quick.Communication
             return _proxyGenerator.GetServiceProxy<TService>();
         }
 
-        void IRpcClient.SendInvocation(byte[] invocationBytes, object userToken)
+        void IRpcClient.SendInvocation(SendInvocationContext context)
         {
-            SendMessage(invocationBytes);
+            SendMessage(context.InvocationBytes);
         }
 
         #endregion

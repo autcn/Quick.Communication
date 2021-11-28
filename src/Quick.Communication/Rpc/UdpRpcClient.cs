@@ -85,14 +85,14 @@ namespace Quick.Communication
             return _proxyGenerator.GetServiceProxy<TService>();
         }
 
-        void IRpcClient.SendInvocation(byte[] invocationBytes, object userToken)
+        void IRpcClient.SendInvocation(SendInvocationContext context)
         {
             if (!IsRunning)
             {
                 throw new Exception("The client is not running.");
             }
-            IPEndPoint serverIpEndPoint = (IPEndPoint)userToken;
-            byte[] packet = MakePacketWithData(invocationBytes);
+            IPEndPoint serverIpEndPoint = (IPEndPoint)context.ServiceToken;
+            byte[] packet = MakePacketWithData(context.InvocationBytes);
             SendMessage(serverIpEndPoint, packet, packet.Length);
         }
 

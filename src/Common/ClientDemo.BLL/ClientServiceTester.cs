@@ -2,6 +2,7 @@
 using RpcProtocolDemo;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ClientDemo.BLL
 {
@@ -59,6 +60,21 @@ namespace ClientDemo.BLL
             //7
             orderService.Ping();
             Console.WriteLine("Ping server successfully.");
+        }
+
+        public static void RunMultiThreadTest(this IOrderService orderService)
+        {
+            for (int i = 1; i <= 3; i++)
+            {
+                Task.Factory.StartNew(idx =>
+                {
+                    for (int j = 1; j <= 100; j++)
+                    {
+                        DateTime dateTime = orderService.GetServerTime();
+                        Console.WriteLine($"{idx}_{j}: {dateTime}");
+                    }
+                }, i);
+            }
         }
     }
 }

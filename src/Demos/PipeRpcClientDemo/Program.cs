@@ -21,6 +21,7 @@ namespace PipeRpcClientDemo
                 Console.WriteLine($"The server time is {serverTime}");
 
                 orderService.RunOtherTest();
+                orderService.RunMultiThreadTest();
 
                 Console.WriteLine("Press any key to exit!");
                 Console.ReadLine();

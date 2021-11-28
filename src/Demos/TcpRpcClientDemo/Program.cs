@@ -1,9 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using ClientDemo.BLL;
 using Quick.Communication;
 using RpcProtocolDemo;
 using System;
-using System.Collections.Generic;
-using ClientDemo.BLL;
 
 namespace TcpRpcClientDemo
 {
@@ -23,6 +21,7 @@ namespace TcpRpcClientDemo
                 Console.WriteLine($"The server time is {serverTime}");
 
                 orderService.RunOtherTest();
+                orderService.RunMultiThreadTest();
 
                 Console.WriteLine("Press any key to exit!");
                 Console.ReadLine();
