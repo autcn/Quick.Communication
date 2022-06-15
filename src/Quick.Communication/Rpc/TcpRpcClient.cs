@@ -19,6 +19,7 @@ namespace Quick.Communication
         public TcpRpcClient(bool autoReconnect) : base(autoReconnect)
         {
             _proxyGenerator = new ServiceProxyGenerator(this);
+            _rpcServerExecutor = new RpcServerExecutor();
         }
 
         /// <summary>
@@ -28,6 +29,7 @@ namespace Quick.Communication
         public TcpRpcClient(IPacketSpliter packetSpliter) : base(packetSpliter)
         {
             _proxyGenerator = new ServiceProxyGenerator(this);
+            _rpcServerExecutor = new RpcServerExecutor();
         }
 
         /// <summary>
@@ -38,12 +40,14 @@ namespace Quick.Communication
         public TcpRpcClient(bool autoReconnect, IPacketSpliter packetSpliter) : base(autoReconnect, packetSpliter)
         {
             _proxyGenerator = new ServiceProxyGenerator(this);
+            _rpcServerExecutor = new RpcServerExecutor();
         }
 
         #endregion
 
         #region Private members
 
+        private RpcServerExecutor _rpcServerExecutor; //The service executor for RPC server.
         private ServiceProxyGenerator _proxyGenerator; //The service proxy generator for client.
 
         #endregion
@@ -66,7 +70,27 @@ namespace Quick.Communication
         /// <returns></returns>
         protected override bool ReceivedMessageFilter(MessageReceivedEventArgs tcpRawMessageArgs)
         {
-            RpcReturnDataReceived?.Invoke(this, new RpcReturnDataEventArgs(tcpRawMessageArgs.MessageRawData.ToArray()));
+            byte flag = tcpRawMessageArgs.MessageRawData.ElementAt(0);
+            byte[] content = TcpRpcCommon.GetRpcContent(tcpRawMessageArgs.MessageRawData);
+            if (flag == TcpRpcCommon.RpcResponse)
+            {
+                RpcReturnDataReceived?.Invoke(this, new RpcReturnDataEventArgs(content));
+            }
+            else
+            {
+                try
+                {
+                    _rpcServerExecutor.ExecuteAsync(content).ContinueWith(task =>
+                    {
+                        SendMessage(TcpRpcCommon.MakeRpcPacket(task.Result, TcpRpcCommon.RpcResponse));
+                    });
+                }
+                catch
+                {
+
+                }
+            }
+
             return false;
         }
 
@@ -75,36 +99,84 @@ namespace Quick.Communication
         #region Public methods
 
         /// <summary>
+        /// Add service to RPC server container.
+        /// </summary>
+        /// <typeparam name="TInterface">The interface of service.</typeparam>
+        /// <param name="instance">The instance of the service that implement the TInterface.</param>
+        public void AddLocalService<TInterface>(TInterface instance)
+        {
+            _rpcServerExecutor.AddService<TInterface>(instance);
+        }
+
+        /// <summary>
+        /// Add service to RPC server container.
+        /// </summary>
+        /// <typeparam name="TInterface">The interface of service.</typeparam>
+        /// <param name="constructor">The func delegate used to create service instance.</param>
+        public void AddLocalService<TInterface>(Func<TInterface> constructor)
+        {
+            _rpcServerExecutor.AddService<TInterface>(constructor);
+        }
+
+        /// <summary>
         /// Register the service proxy type to the channel.
+        /// </summary>'
+        /// <param name="serviceType">The service proxy type that will be called by user.</param>
+        public void RegisterRemoteServiceProxy(Type serviceType)
+        {
+            _proxyGenerator.RegisterServiceProxy(serviceType, null);
+        }
+
+        /// <summary>
+        /// Register the service proxy type of remote side.
         /// </summary>
         /// <typeparam name="TService">The service proxy type that will be called by user.</typeparam>
-        public void RegisterClientServiceProxy<TService>()
+        public void RegisterRemoteServiceProxy<TService>()
         {
             _proxyGenerator.RegisterServiceProxy<TService>(null);
+        }
+
+        /// <summary>
+        /// UnRegister the service proxy type of remote side.
+        /// </summary>
+        /// <param name="serviceType">The service proxy type that will be called by user.</param>
+        public void UnRegisterRemoteServiceProxy(Type serviceType)
+        {
+            _proxyGenerator.UnRegisterServiceProxy(serviceType);
         }
 
         /// <summary>
         /// UnRegister the service proxy type in the channel.
         /// </summary>
         /// <typeparam name="TService">The service proxy type that will be called by user.</typeparam>
-        public void UnRegisterClientServiceProxy<TService>()
+        public void UnRegisterRemoteServiceProxy<TService>()
         {
             _proxyGenerator.UnRegisterServiceProxy<TService>();
         }
 
         /// <summary>
-        /// Get the service proxy from the channel.The user can use the service proxy to call RPC service.
+        /// Get the service proxy of remote side.The user can use the service proxy to call RPC service.
         /// </summary>
         /// <typeparam name="TService">The service proxy type that will be called by user.</typeparam>
         /// <returns>The instance of the service proxy.</returns>
-        public TService GetClientServiceProxy<TService>()
+        public TService GetRemoteServiceProxy<TService>()
         {
             return _proxyGenerator.GetServiceProxy<TService>();
         }
 
+        /// <summary>
+        /// Get the service proxy of remote side.The user can use the service proxy to call RPC service.
+        /// </summary>
+        /// <param name="serviceType">The service proxy type that will be called by user.</param>
+        /// <returns>The instance of the service proxy.</returns>
+        public object GetRemoteServiceProxy(Type serviceType)
+        {
+            return _proxyGenerator.GetServiceProxy(serviceType);
+        }
+
         void IRpcClient.SendInvocation(SendInvocationContext context)
         {
-            SendMessage(context.InvocationBytes);
+            SendMessage(TcpRpcCommon.MakeRpcPacket(context.InvocationBytes, TcpRpcCommon.RpcRequest));
         }
 
         #endregion

@@ -2,6 +2,7 @@
 using Quick.Communication;
 using RpcProtocolDemo;
 using System;
+using System.Linq;
 
 namespace TcpRpcClientDemo
 {
@@ -12,10 +13,11 @@ namespace TcpRpcClientDemo
             try
             {
                 TcpRpcClient tcpRpcClient = new TcpRpcClient(true);
-                tcpRpcClient.RegisterClientServiceProxy<IOrderService>();
+                tcpRpcClient.RegisterRemoteServiceProxy<IOrderService>();
+                tcpRpcClient.AddLocalService<IClientService>(new ClientService());
                 tcpRpcClient.Connect("127.0.0.1", 5000);
 
-                IOrderService orderService = tcpRpcClient.GetClientServiceProxy<IOrderService>();
+                IOrderService orderService = tcpRpcClient.GetRemoteServiceProxy<IOrderService>();
 
                 DateTime serverTime = orderService.GetServerTime();
                 Console.WriteLine($"The server time is {serverTime}");

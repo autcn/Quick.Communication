@@ -38,4 +38,10 @@ namespace RpcProtocolDemo
         public string Name { get; set; }
         public string Status { get; set; }
     }
+
+    //The client functions
+    public interface IClientService
+    {
+        void Notify(string message);
+    }
 }
