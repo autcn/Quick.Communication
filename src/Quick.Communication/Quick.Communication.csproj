@@ -10,9 +10,9 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>quick rpc tcp udp</PackageTags>
     <RepositoryUrl>https://github.com/autcn/Quick.Communication</RepositoryUrl>
-    <Version>1.0.6-beta.6</Version>
-    <AssemblyVersion>1.0.6.0</AssemblyVersion>
-    <FileVersion>1.0.6.0</FileVersion>
+    <Version>1.0.7</Version>
+    <AssemblyVersion>1.0.7.0</AssemblyVersion>
+    <FileVersion>1.0.7.0</FileVersion>
     <PackageId>Quick.Communication.Rpc</PackageId>
     <Description>The library provides a variety of RPC communication methods, include tcp, udp and pipe. It is very easy using them  to write RPC programs.</Description>
   </PropertyGroup>
