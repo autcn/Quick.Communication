@@ -86,7 +86,7 @@ namespace Quick.Communication
         /// <returns>If true, message delivery to continue. Otherwise false.</returns>
         protected override bool ReceivedMessageFilter(MessageReceivedEventArgs tcpRawMessageArgs)
         {
-            byte flag = tcpRawMessageArgs.MessageRawData.ElementAt(0);
+            int flag = TcpRpcCommon.GetFlag(tcpRawMessageArgs.MessageRawData);
             byte[] content = TcpRpcCommon.GetRpcContent(tcpRawMessageArgs.MessageRawData);
             long clientId = tcpRawMessageArgs.ClientID;
             if (flag == TcpRpcCommon.RpcResponse)
@@ -95,8 +95,9 @@ namespace Quick.Communication
                 {
                     rpcClient.SetReturnData(content);
                 }
+                return true;
             }
-            else
+            else if(flag == TcpRpcCommon.RpcRequest)
             {
                 try
                 {
@@ -109,6 +110,7 @@ namespace Quick.Communication
                 {
 
                 }
+                return true;
             }
 
             return false;
