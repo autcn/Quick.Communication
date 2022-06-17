@@ -210,6 +210,21 @@ namespace Quick.Communication
         }
 
         /// <summary>
+        /// Get the service proxy for client side.The user can use the service proxy to call RPC service.
+        /// </summary>
+        /// <param name="serviceType">The service proxy type that will be called by user.</param>
+        /// <param name="clientId">The id of the connected client.</param>
+        /// <returns>The instance of the service proxy.</returns>
+        public object GetRemoteServiceProxy(long clientId, Type serviceType)
+        {
+            if (!_rpcClients.TryGetValue(clientId, out var serverRpcClient))
+            {
+                throw new Exception("The client is disconnected.");
+            }
+            return serverRpcClient.ProxyGenerator.GetServiceProxy(serviceType);
+        }
+
+        /// <summary>
         /// Get the all service proxy for clients side.
         /// </summary>
         /// <typeparam name="TService">The service proxy type that will be called by user.</typeparam>
@@ -222,10 +237,9 @@ namespace Quick.Communication
         /// <summary>
         /// Get the service proxy for client side.The user can use the service proxy to call RPC service.
         /// </summary>
-        /// <param name="clientId">The id of the connected client.</param>
         /// <param name="serviceType">The service proxy type that will be called by user.</param>
         /// <returns>The instances of the service proxy.</returns>
-        public List<object> GetAllRemoteServiceProxy(long clientId, Type serviceType)
+        public List<object> GetAllRemoteServiceProxy(Type serviceType)
         {
             return _rpcClients.Values.Select(p => p.ProxyGenerator.GetServiceProxy(serviceType)).ToList();
         }
