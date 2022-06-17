@@ -70,13 +70,14 @@ namespace Quick.Communication
         /// <returns></returns>
         protected override bool ReceivedMessageFilter(MessageReceivedEventArgs tcpRawMessageArgs)
         {
-            byte flag = tcpRawMessageArgs.MessageRawData.ElementAt(0);
+            int flag = TcpRpcCommon.GetFlag(tcpRawMessageArgs.MessageRawData);
             byte[] content = TcpRpcCommon.GetRpcContent(tcpRawMessageArgs.MessageRawData);
             if (flag == TcpRpcCommon.RpcResponse)
             {
                 RpcReturnDataReceived?.Invoke(this, new RpcReturnDataEventArgs(content));
+                return true;
             }
-            else
+            else if (flag == TcpRpcCommon.RpcRequest)
             {
                 try
                 {
@@ -89,6 +90,7 @@ namespace Quick.Communication
                 {
 
                 }
+                return true;
             }
 
             return false;
